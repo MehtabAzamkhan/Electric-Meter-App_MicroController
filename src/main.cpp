@@ -5,12 +5,17 @@
 
 #include <WiFi.h>
 #include <FirebaseESP32.h>
+#include "IRremote.hpp"
 
 
 #define FIREBASE_HOST "https://hello-52c2a-default-rtdb.firebaseio.com/"
 #define FIREBASE_AUTH "PlhqAYWRrLfO1HqtO5GzR9TsNGDXt1QUlEWkbTvA"
 #define WIFI_SSID "Shoaib"
 #define WIFI_PASSWORD "A0123456789"
+
+const int RECV_PIN = 7;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
 
 
 //Define FirebaseESP32 data object
@@ -22,6 +27,7 @@ int Vrdata = 0;
 void setup()
 {
 
+  irrecv.enableIRIn();
   Serial.begin(115200);
  
  pinMode(Vresistor, INPUT);
@@ -65,11 +71,23 @@ void setup()
 
 void loop()
 {
-   Vrdata = analogRead(Vresistor);
- int Sdata = map(Vrdata,0,4095,0,1000);
- Serial.println(Sdata); 
+   
+ if (irrecv.decode(&results)){
+  Vrdata = analogRead(Vresistor);
+  int Sdata = map(Vrdata,0,4095,0,1000);
+    Serial.println(results.value, HEX);
+    Serial.println(results.value, DEC);
+    irrecv.resume();
+    Serial.println(sdata);
+
 delay(100); 
   json.set("/Data", Sdata);
   Firebase.updateNode(firebaseData,"Current",json);
 
 }
+}
+
+ 
+
+
+
