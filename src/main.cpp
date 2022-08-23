@@ -6,10 +6,10 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #include <LiquidCrystal.h>
 #include "EmonLib.h"    
  
-#define FIREBASE_HOST "https://hello-52c2a-default-rtdb.firebaseio.com/"
-#define FIREBASE_AUTH "PlhqAYWRrLfO1HqtO5GzR9TsNGDXt1QUlEWkbTvA"
-#define WIFI_SSID "Shoaib"
-#define WIFI_PASSWORD "A0123456789"
+#define FIREBASE_HOST "https://final-98305-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH "Hb68fePoOC5RhGPbFM8Sg9NhjTpPCs3dV55Rfk00"
+#define WIFI_SSID "robeel047"
+#define WIFI_PASSWORD "33445566"
  
  
 //Define FirebaseESP32 data object
@@ -94,11 +94,9 @@ emon1.calcVI(20,2000);         // Calculate all. No.of half wavelengths (crossin
   lcd.print("R.Power:");
   lcd.print(realPower);
   lcd.print("W");
-  int RPdata = map(realPower,0,4095,0,1000);
-  Serial.println(RPdata); 
   delay(100); 
-  json.set("/data", RPdata);
-  Firebase.updateNode(firebaseData,"/Real Power",json);
+  json.set("/realPower", realPower);
+  Firebase.updateNode(firebaseData,"/",json);
 
 
   
@@ -109,11 +107,8 @@ emon1.calcVI(20,2000);         // Calculate all. No.of half wavelengths (crossin
   lcd.print("A.Power:");
   lcd.print(apparentPower);
   lcd.print("W");
-  int APdata = map(apparentPower,0,4095,0,1000);
-  Serial.println(APdata); 
   delay(100); 
-  json.set("/data1", APdata);
-  Firebase.updateNode(firebaseData,"/Apparent Power",json);
+  json.set("/apparentPower", apparentPower);
   delay(2000);
 
 
@@ -127,11 +122,9 @@ emon1.calcVI(20,2000);         // Calculate all. No.of half wavelengths (crossin
   lcd.print("P.Factor:");
   lcd.print(powerFActor);
   lcd.print("W");
-  int PFdata = map(powerFActor,0,4095,0,1000);
-  Serial.println(PFdata); 
   delay(100); 
-  json.set("/data2", PFdata);
-  Firebase.updateNode(firebaseData,"/Power Factor",json);
+  json.set("/powerFActor", powerFActor);
+ 
 
 
    
@@ -142,11 +135,9 @@ emon1.calcVI(20,2000);         // Calculate all. No.of half wavelengths (crossin
   lcd.print("Voltage:");
   lcd.print(supplyVoltage);
   lcd.print("V");
-  int Vdata = map(supplyVoltage,0,4095,0,1000);
-  Serial.println(Vdata); 
   delay(100); 
-  json.set("/data3", Vdata);
-  Firebase.updateNode(firebaseData,"/Voltage",json);
+  json.set("/supplyVoltage", supplyVoltage);
+ 
   delay(3000);
 
 
@@ -162,11 +153,9 @@ emon1.calcVI(20,2000);         // Calculate all. No.of half wavelengths (crossin
   lcd.print("Irms:");
   lcd.print(Irms);
   lcd.print("A");  
-  int Idata = map(Irms,0,4095,0,1000);
-  Serial.println(Idata); 
   delay(100); 
-  json.set("/data4", Idata);
-  Firebase.updateNode(firebaseData,"/Current",json);
+  json.set("/Irms", Irms);
+
 
 
   
@@ -177,11 +166,9 @@ emon1.calcVI(20,2000);         // Calculate all. No.of half wavelengths (crossin
   lcd.print("Kwh:");
   lcd.print(kWh);
   lcd.print("W");
-  int Kdata = map(kWh,0,4095,0,1000);
-  Serial.println(Kdata); 
   delay(100); 
-  json.set("/data5", Kdata);
-  Firebase.updateNode(firebaseData,"/KWh",json);
+  json.set("/KWh", kWh);
+
   delay(1000);
 
  
@@ -189,5 +176,3 @@ emon1.calcVI(20,2000);         // Calculate all. No.of half wavelengths (crossin
 
    
 
-
-  
